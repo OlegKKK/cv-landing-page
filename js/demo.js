@@ -1,8 +1,3 @@
-/**
- * Particleground demo
- * @author Jonathan Nicol - @mrjnicol
- */
-
 document.addEventListener('DOMContentLoaded', function () {
   particleground(document.getElementById('particles'), {
     dotColor: '#F05F40',
@@ -11,16 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
   var intro = document.getElementById('intro');
   intro.style.marginTop = - intro.offsetHeight / 2 + 'px';
 }, false);
-
-/*!
- * Particleground
- *
- * @author Jonathan Nicol - @mrjnicol
- * @version 1.1.0
- * @description Creates a canvas based particle system background
- *
- * Inspired by http://requestlab.fr/ and http://disruptivebydesign.com/
- */
 
 ;(function(window, document) {
   "use strict";
@@ -66,9 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     options = extend({}, window[pluginName].defaults, options);
 
-    /**
-     * Init
-     */
     function init() {
       if (!canvasSupport) { return; }
 
@@ -109,9 +91,6 @@ document.addEventListener('DOMContentLoaded', function () {
       hook('onInit');
     }
 
-    /**
-     * Style the canvas
-     */
     function styleCanvas() {
       canvas.width = element.offsetWidth;
       canvas.height = element.offsetHeight;
@@ -120,9 +99,6 @@ document.addEventListener('DOMContentLoaded', function () {
       ctx.lineWidth = options.lineWidth;
     }
 
-    /**
-     * Draw particles
-     */
     function draw() {
       if (!canvasSupport) { return; }
 
@@ -141,30 +117,23 @@ document.addEventListener('DOMContentLoaded', function () {
         particles[i].draw();
       };
 
-      // Call this function next time screen is redrawn
       if (!paused) {
         raf = requestAnimationFrame(draw);
       }
     }
 
-    /**
-     * Add/remove particles.
-     */
     function resizeHandler() {
-      // Resize the canvas
       styleCanvas();
 
       var elWidth = element.offsetWidth;
       var elHeight = element.offsetHeight;
 
-      // Remove particles that are outside the canvas
       for (var i = particles.length - 1; i >= 0; i--) {
         if (particles[i].position.x > elWidth || particles[i].position.y > elHeight) {
           particles.splice(i, 1);
         }
       };
 
-      // Adjust particle density
       var numParticles = Math.round((canvas.width * canvas.height) / options.density);
       if (numParticles > particles.length) {
         while (numParticles > particles.length) {
@@ -175,30 +144,21 @@ document.addEventListener('DOMContentLoaded', function () {
         particles.splice(numParticles);
       }
 
-      // Re-index particles
       for (i = particles.length - 1; i >= 0; i--) {
         particles[i].setStackPos(i);
       };
     }
 
-    /**
-     * Pause particle system
-     */
     function pause() {
       paused = true;
     }
 
-    /**
-     * Start particle system
-     */
     function start() {
       paused = false;
       draw();
     }
 
-    /**
-     * Particle
-     */
+
     function Particle() {
       this.stackPos;
       this.active = true;
@@ -210,7 +170,6 @@ document.addEventListener('DOMContentLoaded', function () {
         x: Math.ceil(Math.random() * canvas.width),
         y: Math.ceil(Math.random() * canvas.height)
       }
-      // Random particle speed, within min and max values
       this.speed = {}
       switch (options.directionX) {
         case 'left':
@@ -238,23 +197,16 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    /**
-     * Draw particle
-     */
     Particle.prototype.draw = function() {
-      // Draw circle
       ctx.beginPath();
       ctx.arc(this.position.x + this.parallaxOffsetX, this.position.y + this.parallaxOffsetY, options.particleRadius / 2, 0, Math.PI * 2, true);
       ctx.closePath();
       ctx.fill();
 
-      // Draw lines
       ctx.beginPath();
-      // Iterate over all particles which are higher in the stack than this one
       for (var i = particles.length - 1; i > this.stackPos; i--) {
         var p2 = particles[i];
 
-        // Pythagorus theorum to get distance between two points
         var a = this.position.x - p2.position.x
         var b = this.position.y - p2.position.y
         var dist = Math.sqrt((a * a) + (b * b)).toFixed(2);
@@ -273,16 +225,11 @@ document.addEventListener('DOMContentLoaded', function () {
       ctx.closePath();
     }
 
-    /**
-     * update particle position
-     */
     Particle.prototype.updatePosition = function() {
       if (options.parallax) {
         if (orientationSupport && !desktop) {
-          // Map tiltX range [-30,30] to range [0,winW]
           var ratioX = (winW - 0) / (30 - -30);
           pointerX = (tiltX - -30) * ratioX + 0;
-          // Map tiltY range [-30,30] to range [0,winH]
           var ratioY = (winH - 0) / (30 - -30);
           pointerY = (tiltY - -30) * ratioY + 0;
         } else {
@@ -342,9 +289,6 @@ document.addEventListener('DOMContentLoaded', function () {
       this.position.y += this.speed.y;
     }
 
-    /**
-     * Setter: particle stacking position
-     */
     Particle.prototype.setStackPos = function(i) {
       this.stackPos = i;
     }
@@ -391,22 +335,21 @@ document.addEventListener('DOMContentLoaded', function () {
     maxSpeedX: 0.7,
     minSpeedY: 0.1,
     maxSpeedY: 0.7,
-    directionX: 'center', // 'center', 'left' or 'right'. 'center' = dots bounce off edges
-    directionY: 'center', // 'center', 'up' or 'down'. 'center' = dots bounce off edges
-    density: 10000, // How many particles will be generated: one particle every n pixels
+    directionX: 'center',
+    directionY: 'center',
+    density: 10000,
     dotColor: '#666666',
     lineColor: '#666666',
-    particleRadius: 7, // Dot size
+    particleRadius: 7,
     lineWidth: 1,
     curvedLines: false,
-    proximity: 100, // How close two dots need to be before they join
+    proximity: 100,
     parallax: true,
-    parallaxMultiplier: 5, // The lower the number, the more extreme the parallax effect
+    parallaxMultiplier: 5,
     onInit: function() {},
     onDestroy: function() {}
   };
 
-  // nothing wrong with hooking into jQuery if it's there...
   if ($) {
     $.fn[pluginName] = function(options) {
       if (typeof arguments[0] === 'string') {
@@ -435,12 +378,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 })(window, document);
 
-/**
- * requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
- * @see: http://paulirish.com/2011/requestanimationframe-for-smart-animating/
- * @see: http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
- * @license: MIT license
- */
 (function() {
     var lastTime = 0;
     var vendors = ['ms', 'moz', 'webkit', 'o'];
