@@ -40,6 +40,7 @@
 	-moz-box-shadow: 1px 1px 3px #333;
 	box-shadow: 1px 1px 3px #333;
 }
+
 .social-icons.icon-zoom .fa:hover, .social-icons.icon-zoom .fa:active {
  	-webkit-transform: scale(1.1);
 	-moz-transform: scale(1.1);
