@@ -47,6 +47,7 @@
 	-o-transform: scale(1.1);
 	transform: scale(1.1);
 }
+
 .social-icons.icon-rotate .fa:hover, .social-icons.icon-rotate .fa:active {
 	-webkit-transform: scale(1.1) rotate(360deg);
 	-moz-transform: scale(1.1) rotate(360deg);
