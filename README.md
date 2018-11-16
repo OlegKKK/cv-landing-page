@@ -1,7 +1,7 @@
 # olegkram.github.io
 CV Landing Page
 
-Tech Stack
+# Tech Stack
 * HTML
 * CSS
 * JavaScript
