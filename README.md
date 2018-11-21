@@ -1,5 +1,5 @@
 # olegkram.github.io
-CV Landing Page
+Landing Page
 
 # Tech Stack
 * HTML
